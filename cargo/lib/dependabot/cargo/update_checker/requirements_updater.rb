@@ -6,6 +6,7 @@
 # - https://steveklabnik.github.io/semver/semver/index.html                    #
 ################################################################################
 
+require "dependabot/errors"
 require "dependabot/cargo/update_checker"
 require "dependabot/cargo/requirement"
 require "dependabot/cargo/version"
@@ -14,7 +15,7 @@ module Dependabot
   module Cargo
     class UpdateChecker
       class RequirementsUpdater
-        class UnfixableRequirement < StandardError; end
+        class UnfixableRequirement < Dependabot::DependabotError; end
 
         VERSION_REGEX = /[0-9]+(?:\.[A-Za-z0-9\-*]+)*/.freeze
         ALLOWED_UPDATE_STRATEGIES =

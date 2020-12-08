@@ -15,7 +15,7 @@ module Dependabot
       class LockfileUpdater
         require_relative "manifest_updater"
 
-        class MissingExtensions < StandardError
+        class MissingExtensions < Dependabot::DependabotError
           attr_reader :extensions
 
           def initialize(extensions)

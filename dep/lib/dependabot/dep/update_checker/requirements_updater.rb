@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "dependabot/errors"
 require "dependabot/dep/update_checker"
 require "dependabot/dep/requirement"
 require "dependabot/dep/version"
@@ -8,7 +9,7 @@ module Dependabot
   module Dep
     class UpdateChecker
       class RequirementsUpdater
-        class UnfixableRequirement < StandardError; end
+        class UnfixableRequirement < Dependabot::DependabotError; end
 
         VERSION_REGEX = /[0-9]+(?:\.[A-Za-z0-9\-*]+)*/.freeze
         ALLOWED_UPDATE_STRATEGIES = %i(widen_ranges bump_versions).freeze

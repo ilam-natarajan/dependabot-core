@@ -12,7 +12,7 @@ module Dependabot
   module Composer
     class UpdateChecker
       class VersionResolver # rubocop:disable Metrics/ClassLength
-        class MissingExtensions < StandardError
+        class MissingExtensions < Dependabot::DependabotError
           attr_reader :extensions
 
           def initialize(extensions)

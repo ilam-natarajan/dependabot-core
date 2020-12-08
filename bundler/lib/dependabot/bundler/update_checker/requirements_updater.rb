@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
+require "dependabot/errors"
 require "dependabot/bundler/update_checker"
 
 module Dependabot
   module Bundler
     class UpdateChecker
       class RequirementsUpdater
-        class UnfixableRequirement < StandardError; end
+        class UnfixableRequirement < Dependabot::DependabotError; end
 
         ALLOWED_UPDATE_STRATEGIES =
           %i(bump_versions bump_versions_if_necessary).freeze

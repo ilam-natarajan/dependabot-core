@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
+require "dependabot/errors"
 require "dependabot/pull_request_updater/github"
 require "dependabot/pull_request_updater/gitlab"
 
 module Dependabot
   class PullRequestUpdater
-    class BranchProtected < StandardError; end
+    class BranchProtected < Dependabot::DependabotError; end
 
     attr_reader :source, :files, :base_commit, :old_commit, :credentials,
                 :pull_request_number, :author_details, :signature_key

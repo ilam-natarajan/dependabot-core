@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "dependabot/errors"
 require "dependabot/metadata_finders"
 
 module Dependabot
@@ -12,16 +13,16 @@ module Dependabot
     require "dependabot/pull_request_creator/branch_namer"
     require "dependabot/pull_request_creator/labeler"
 
-    class RepoNotFound < StandardError; end
+    class RepoNotFound < Dependabot::DependabotError; end
 
-    class RepoArchived < StandardError; end
+    class RepoArchived < Dependabot::DependabotError; end
 
-    class RepoDisabled < StandardError; end
+    class RepoDisabled < Dependabot::DependabotError; end
 
-    class NoHistoryInCommon < StandardError; end
+    class NoHistoryInCommon < Dependabot::DependabotError; end
 
     # AnnotationError is raised if a PR was created, but failed annotation
-    class AnnotationError < StandardError
+    class AnnotationError < Dependabot::DependabotError
       attr_reader :cause, :pull_request
       def initialize(cause, pull_request)
         super(cause.message)

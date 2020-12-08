@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
+require "dependabot/errors"
 require "dependabot/shared_helpers"
 require "excon"
 
 module Dependabot
   module Clients
     class Azure
-      class NotFound < StandardError; end
+      class NotFound < Dependabot::DependabotError; end
 
       MAX_PR_DESCRIPTION_LENGTH = 3999
 

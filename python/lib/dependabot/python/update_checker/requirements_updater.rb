@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "dependabot/errors"
 require "dependabot/python/requirement_parser"
 require "dependabot/python/update_checker"
 require "dependabot/python/version"
@@ -12,7 +13,7 @@ module Dependabot
         PYPROJECT_OR_SEPARATOR = /(?<=[a-zA-Z0-9*])\s*\|+/.freeze
         PYPROJECT_SEPARATOR = /#{PYPROJECT_OR_SEPARATOR}|,/.freeze
 
-        class UnfixableRequirement < StandardError; end
+        class UnfixableRequirement < Dependabot::DependabotError; end
 
         attr_reader :requirements, :update_strategy, :has_lockfile,
                     :latest_resolvable_version

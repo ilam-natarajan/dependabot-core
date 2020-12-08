@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
+require "dependabot/errors"
 require "dependabot/shared_helpers"
 
 module Dependabot
   module Clients
     class CodeCommit
-      class NotFound < StandardError; end
+      class NotFound < Dependabot::DependabotError; end
 
       #######################
       # Constructor methods #

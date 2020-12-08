@@ -11,7 +11,7 @@ module Dependabot
   module NpmAndYarn
     class UpdateChecker
       class LatestVersionFinder
-        class RegistryError < StandardError
+        class RegistryError < Dependabot::DependabotError
           attr_reader :status
 
           def initialize(status, msg)

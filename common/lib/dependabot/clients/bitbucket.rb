@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
+require "dependabot/errors"
 require "dependabot/shared_helpers"
 require "excon"
 
 module Dependabot
   module Clients
     class Bitbucket
-      class NotFound < StandardError; end
+      class NotFound < Dependabot::DependabotError; end
 
-      class Unauthorized < StandardError; end
+      class Unauthorized < Dependabot::DependabotError; end
 
-      class Forbidden < StandardError; end
+      class Forbidden < Dependabot::DependabotError; end
 
       ##########
       # Client #

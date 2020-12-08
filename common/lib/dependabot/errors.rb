@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
-require "dependabot/shared_helpers"
+require "dependabot/utils"
 
 module Dependabot
   class DependabotError < StandardError
+    BASIC_AUTH_REGEX = %r{://(?<auth>[^@%]+)(@|%40)}.freeze
+    # Remove any path segment from fury.io source
+    FURY_IO_PATH_REGEX = %r{fury\.io/(?<path>.+)}.freeze
+
     def initialize(msg = nil)
       msg = sanitize_message(msg)
       super(msg)
@@ -15,10 +19,27 @@ module Dependabot
       return unless message
 
       path_regex =
-        Regexp.escape(SharedHelpers::BUMP_TMP_DIR_PATH) + "\/" +
-        Regexp.escape(SharedHelpers::BUMP_TMP_FILE_PREFIX) + "[^/]*"
+        Regexp.escape(Utils::BUMP_TMP_DIR_PATH) + "\/" +
+        Regexp.escape(Utils::BUMP_TMP_FILE_PREFIX) + "[^/]*"
 
-      message.gsub(/#{path_regex}/, "dependabot_tmp_dir")
+      message = message.gsub(/#{path_regex}/, "dependabot_tmp_dir").strip
+      filter_sensitive_data(message)
+    end
+
+    def filter_sensitive_data(message)
+      replace_capture_groups(message, BASIC_AUTH_REGEX, "<redacted>")
+    end
+
+    def sanitize_source(source)
+      replace_capture_groups(source, FURY_IO_PATH_REGEX, "<redacted path>")
+    end
+
+    def replace_capture_groups(string, regex, replacement)
+      return string unless string.respond_to?(:scan)
+
+      string.scan(regex).flatten.compact.reduce(string) do |original_msg, match|
+        original_msg.gsub(match, replacement)
+      end
     end
   end
 
@@ -99,10 +120,10 @@ module Dependabot
     attr_reader :source
 
     def initialize(source)
-      @source = source.gsub(%r{(?<=\.fury\.io)/[A-Za-z0-9]{20}(?=/)}, "")
+      @source = sanitize_source(source)
       msg = "The following source could not be reached as it requires "\
             "authentication (and any provided details were invalid or lacked "\
-            "the required permissions): #{source}"
+            "the required permissions): #{@source}"
       super(msg)
     end
   end
@@ -111,8 +132,8 @@ module Dependabot
     attr_reader :source
 
     def initialize(source)
-      @source = source.gsub(%r{(?<=\.fury\.io)/[A-Za-z0-9]{20}(?=/)}, "")
-      super("The following source timed out: #{source}")
+      @source = sanitize_source(source)
+      super("The following source timed out: #{@source}")
     end
   end
 
@@ -120,8 +141,8 @@ module Dependabot
     attr_reader :source
 
     def initialize(source)
-      @source = source.gsub(%r{(?<=\.fury\.io)/[A-Za-z0-9]{20}(?=/)}, "")
-      super("Could not verify the SSL certificate for #{source}")
+      @source = sanitize_source(source)
+      super("Could not verify the SSL certificate for #{@source}")
     end
   end
 

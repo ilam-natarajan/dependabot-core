@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "dependabot/errors"
 require "dependabot/file_updaters"
 require "dependabot/file_updaters/base"
 require "dependabot/npm_and_yarn/dependency_files_filterer"
@@ -12,7 +13,7 @@ module Dependabot
       require_relative "file_updater/npm_lockfile_updater"
       require_relative "file_updater/yarn_lockfile_updater"
 
-      class NoChangeError < StandardError
+      class NoChangeError < Dependabot::DependabotError
         def initialize(message:, error_context:)
           super(message)
           @error_context = error_context
