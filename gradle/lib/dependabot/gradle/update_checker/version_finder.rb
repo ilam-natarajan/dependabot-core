@@ -194,7 +194,7 @@ module Dependabot
               Nokogiri::XML("")
             rescue Excon::Error::Socket, Excon::Error::Timeout,
                    Excon::Error::TooManyRedirects
-              raise if central_repo_urls.include?(repository_details["url"])
+              # raise if central_repo_urls.include?(repository_details["url"])
 
               Nokogiri::XML("")
             end
