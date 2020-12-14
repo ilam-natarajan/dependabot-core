@@ -2,12 +2,10 @@ name: CI
 on:
   push:
     branches:
-      - "actions/**"
-      - "wip/**"
-      - "main"
+      - "notyet"
   pull_request:
     branches:
-      - "**"
+      - "notyet"
 jobs:
   ci:
     name: CI
