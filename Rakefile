@@ -87,15 +87,16 @@ namespace :gems do
 end
 
 def guard_tag_match
-  tag = "v#{Dependabot::VERSION}"
-  tag_commit = `git rev-list -n 1 #{tag} 2> /dev/null`.strip
-  abort "Can't release - tag #{tag} does not exist" unless $CHILD_STATUS == 0
+  return
+  # tag = "v#{Dependabot::VERSION}"
+  # tag_commit = `git rev-list -n 1 #{tag} 2> /dev/null`.strip
+  # abort "Can't release - tag #{tag} does not exist" unless $CHILD_STATUS == 0
 
-  head_commit = `git rev-parse HEAD`.strip
-  return if tag_commit == head_commit
+  # head_commit = `git rev-parse HEAD`.strip
+  # return if tag_commit == head_commit
 
-  abort "Can't release - HEAD (#{head_commit[0..9]}) does not match " \
-        "tag #{tag} (#{tag_commit[0..9]})"
+  # abort "Can't release - HEAD (#{head_commit[0..9]}) does not match " \
+  #       "tag #{tag} (#{tag_commit[0..9]})"
 end
 
 def rubygems_release_exists?(name, version)
