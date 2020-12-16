@@ -58,7 +58,7 @@ namespace :gems do
 
     GEMSPECS.each do |gemspec_path|
       gem_name = File.basename(gemspec_path).sub(/\.gemspec$/, "")
-      gem_path = "pkg/#{gem_name}-#{Dependabot::VERSION}.gem"
+      gem_path = "pkg/#{gem_name}-fork-#{Dependabot::VERSION}.gem"
 
       attempts = 0
       loop do
